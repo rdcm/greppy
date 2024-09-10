@@ -1,0 +1,32 @@
+# IDE
+.idea/
+.vscode/
+
+# binary files
+*.out
+*.exe
+*.dll
+*.so
+*.dylib
+
+# object files
+*.o
+*.obj
+*.lo
+*.a
+*.lib
+
+# CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+CMakeLists.txt.user
+
+# Ignore generated test results or logs
+Testing/
+test_results/
+*.log
+
+# Ignore third-party libraries that should not be part of the repository
+third_party/
+build/
