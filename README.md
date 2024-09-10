@@ -12,3 +12,6 @@
 `make tests` - run tests  
 `make run`   - run utility  
 `make clean` - clean artifacts 
+
+---
+`make fromat` - format code  

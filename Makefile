@@ -1,4 +1,4 @@
-.PHONY: build clean run tests
+.PHONY: build clean run tests format
 
 build:
 	mkdir -p build
@@ -12,3 +12,6 @@ run:
 
 tests:
 	./build/tests
+
+format:
+	find ./src ./tests -name '*.cpp' -o -name '*.h' | xargs clang-format -i
