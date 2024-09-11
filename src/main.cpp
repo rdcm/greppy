@@ -13,6 +13,7 @@ using namespace std;
 using namespace std::chrono;
 
 const size_t QUEUE_CAPACITY = 1000;
+mutex cout_mutex;
 
 bool is_binary_file(const filesystem::path &path) {
     ifstream file(path, ios::binary);
@@ -46,6 +47,14 @@ void find_files(filesystem::path dir_path, BoundedQueue<filesystem::path> &queue
     queue.complete();
 }
 
+void display_match(vector<tuple<filesystem::path, string>> &matches) {
+
+    lock_guard<mutex> guard(cout_mutex);
+    for (auto &m : matches) {
+        cout << "Match found in file: " << get<0>(m) << " -> " << get<1>(m) << endl;
+    }
+}
+
 void find_match(string pattern, BoundedQueue<filesystem::path> &queue) {
     while (true) {
         optional<filesystem::path> file_path_opt = queue.pop();
@@ -59,11 +68,14 @@ void find_match(string pattern, BoundedQueue<filesystem::path> &queue) {
 
             string line;
             regex regex_pattern(pattern);
+            vector<tuple<filesystem::path, string>> matches;
             while (getline(file, line)) {
                 if (regex_search(line, regex_pattern)) {
-                    cout << "Match found in file: " << file_path << " -> " << line << endl;
+                    matches.push_back(make_tuple(file_path, line));
                 }
             }
+
+            display_match(matches);
         }
 
         if (queue.is_completed() && !file_path_opt) {
