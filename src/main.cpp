@@ -47,10 +47,6 @@ void find_files(filesystem::path dir_path, BoundedQueue<filesystem::path> &queue
 
 void find_match(string pattern, BoundedQueue<filesystem::path> &queue) {
     while (true) {
-        if (queue.is_completed()) {
-            break;
-        }
-
         optional<filesystem::path> file_path_opt = queue.pop();
         if (file_path_opt) {
             auto file_path = file_path_opt.value();
@@ -66,6 +62,10 @@ void find_match(string pattern, BoundedQueue<filesystem::path> &queue) {
                     cout << "Match found in file: " << file_path << " -> " << line << endl;
                 }
             }
+        }
+
+        if (queue.is_completed() && !file_path_opt) {
+            break;
         }
     }
 }

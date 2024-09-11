@@ -8,7 +8,7 @@ clean:
 	rm -rf build
 
 run:
-	./build/greppy foo bar
+	cd build && rm -f all_classes && ./greppy class . > all_classes
 
 tests:
 	./build/tests
