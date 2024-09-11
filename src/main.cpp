@@ -1,5 +1,6 @@
 #include "bounded_queue.cpp"
 #include "parser.cpp"
+#include <chrono>
 #include <coroutine>
 #include <filesystem>
 #include <fstream>
@@ -9,6 +10,7 @@
 #include <thread>
 
 using namespace std;
+using namespace std::chrono;
 
 const size_t QUEUE_CAPACITY = 1000;
 
@@ -27,9 +29,15 @@ bool is_binary_file(const filesystem::path &path) {
 }
 
 void find_files(filesystem::path dir_path, BoundedQueue<filesystem::path> &queue) {
+    auto now = system_clock::now();
     for (const auto &entry : filesystem::recursive_directory_iterator(dir_path)) {
         auto path = entry.path();
         if (entry.is_regular_file() && !is_binary_file(path)) {
+            auto last_write_time = filesystem::last_write_time(path);
+            if (last_write_time.time_since_epoch() > now.time_since_epoch()) {
+                continue;
+            }
+
             queue.push(path);
         }
     }
