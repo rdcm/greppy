@@ -18,10 +18,11 @@ bool is_binary_file(const filesystem::path &path) {
     ifstream file(path, ios::binary);
     if (file) {
         char ch;
+        // try find non-text character
         while (file.read(&ch, 1)) {
             if (iscntrl(static_cast<unsigned char>(ch)) &&
                 !isspace(static_cast<unsigned char>(ch))) {
-                return true; // Found non-text character
+                return true;
             }
         }
     }
@@ -53,6 +54,7 @@ void find_match(string pattern, BoundedQueue<filesystem::path> &queue) {
             ifstream file(file_path, ios::in);
             if (!file.is_open()) {
                 cerr << "Error opening file: " << file_path << endl;
+                continue;
             }
 
             string line;
