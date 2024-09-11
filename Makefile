@@ -8,7 +8,7 @@ clean:
 	rm -rf build
 
 run:
-	./build/greppy
+	./build/greppy foo bar
 
 tests:
 	./build/tests

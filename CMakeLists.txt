@@ -22,7 +22,7 @@ FetchContent_MakeAvailable(googletest)
 add_executable(greppy src/main.cpp)
 
 # tests
-add_executable(tests tests/tests.cpp)
+add_executable(tests tests/parser_tests.cpp)
 target_link_libraries(tests gtest_main)
 include(GoogleTest)
 gtest_discover_tests(tests)

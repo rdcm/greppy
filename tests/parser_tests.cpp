@@ -1,4 +1,5 @@
 #include "../src/parser.cpp"
+#include <filesystem>
 #include <gtest/gtest.h>
 #include <vector>
 
@@ -38,25 +39,21 @@ TEST(ParserTests, MissingDirectories_If_Passed_Only_Pattern) {
     EXPECT_EQ(result.error(), ParseError::MissingDirectories);
 }
 
-TEST(ParserTests, Ok_If_Passed_At_Least_One_Directory) {
+TEST(ParserTests, NotDirectory_If_Passed_Any_String) {
     const char *args[] = {"./greppy", "any_pattern", "any_dir"};
+
+    auto result = parse_command_line_args(3, args);
+
+    EXPECT_FALSE(result);
+    EXPECT_EQ(result.error(), ParseError::NotDirectory);
+}
+
+TEST(ParserTests, Ok_If_Passed_Correct_Dir_Path) {
+    const char *args[] = {"./greppy", "any_pattern", "/"};
 
     auto result = parse_command_line_args(3, args);
 
     EXPECT_TRUE(result);
     EXPECT_EQ(result.value().Pattern, "any_pattern");
-    EXPECT_EQ(result.value().Directories.size(), 1);
-    EXPECT_EQ(result.value().Directories[0], "any_dir");
-}
-
-TEST(ParserTests, Ok_If_Passed_Several_Directories) {
-    const char *args[] = {"./greppy", "any_pattern", "first_dir", "second_dir"};
-
-    auto result = parse_command_line_args(4, args);
-
-    EXPECT_TRUE(result);
-    EXPECT_EQ(result.value().Pattern, "any_pattern");
-    EXPECT_EQ(result.value().Directories.size(), 2);
-    EXPECT_EQ(result.value().Directories[0], "first_dir");
-    EXPECT_EQ(result.value().Directories[1], "second_dir");
+    EXPECT_EQ(result.value().Directory, filesystem::path("/"));
 }
