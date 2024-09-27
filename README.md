@@ -1,10 +1,10 @@
-# DevEnvironment
+# About 
 
-`clang++ --version`: `18.1.8`  
-`g++-14 --version`: `14.2.0`  
-`cmake --version`: `3.30.3`  
-`make --version`: `3.8.1`
+Multithreaded grep-like utility for search patterns in files.
 
+# Usage
+
+`greppy class . > all_classes`
 
 # Up & Running
 

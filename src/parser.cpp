@@ -62,7 +62,5 @@ expected<Settings, ParseError> parse_command_line_args(int argc, const char *arg
         return unexpected(ParseError::NotDirectory);
     }
 
-    args.erase(args.begin());
-
-    return Settings(args.front(), directory_path);
+    return Settings(args[1], directory_path);
 }

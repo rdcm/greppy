@@ -84,6 +84,16 @@ void find_match(string pattern, BoundedQueue<filesystem::path> &queue) {
     }
 }
 
+unsigned int get_cores_count() {
+    uint cores_count = thread::hardware_concurrency();
+    if (cores_count == 0) {
+        // https://en.cppreference.com/w/cpp/thread/thread/hardware_concurrency
+        return 1;
+    }
+
+    return cores_count; 
+}
+
 int main(int argc, const char *argv[]) {
     auto result = parse_command_line_args(argc, argv);
     if (!result) {
@@ -94,15 +104,15 @@ int main(int argc, const char *argv[]) {
     auto settings = result.value();
     BoundedQueue<filesystem::path> queue(QUEUE_CAPACITY);
 
-    thread find_files_tread(find_files, settings.Directory, ref(queue));
+    thread find_files_thread(find_files, settings.Directory, ref(queue));
 
     vector<thread> workers;
-    for (size_t i = 0; i < thread::hardware_concurrency(); i++) {
+    for (size_t i = 0; i < get_cores_count(); i++) {
         thread worker_tread(find_match, settings.Pattern, ref(queue));
         workers.push_back(std::move(worker_tread));
     }
 
-    find_files_tread.join();
+    find_files_thread.join();
     for (auto &worker_thread : workers) {
         worker_thread.join();
     }
