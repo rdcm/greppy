@@ -3,8 +3,6 @@
 #include <gtest/gtest.h>
 #include <vector>
 
-using namespace std;
-
 TEST(ParserTests, NoArgs_For_Null) {
     auto result = parse_command_line_args(0, nullptr);
 
@@ -55,5 +53,5 @@ TEST(ParserTests, Ok_If_Passed_Correct_Dir_Path) {
 
     EXPECT_TRUE(result);
     EXPECT_EQ(result.value().Pattern, "any_pattern");
-    EXPECT_EQ(result.value().Directory, filesystem::path("/"));
+    EXPECT_EQ(result.value().Directory, std::filesystem::path("/"));
 }
