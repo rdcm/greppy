@@ -1,10 +1,10 @@
 #include "../src/internal/bounded_queue.h"
 #include "../src/internal/match_handler.h"
-#include <thread>
 #include <gtest/gtest.h>
+#include <thread>
 
 class StdoutCapture {
-public:
+  public:
     StdoutCapture() {
         // Redirect stdout to a string stream
         old_stdout = std::cout.rdbuf();
@@ -16,11 +16,9 @@ public:
         std::cout.rdbuf(old_stdout);
     }
 
-    std::string str() const {
-        return ss.str();
-    }
+    std::string str() const { return ss.str(); }
 
-private:
+  private:
     std::streambuf *old_stdout;
     std::ostringstream ss;
 };
@@ -35,9 +33,9 @@ TEST(MatchHandlerTests, Match_Found) {
         StdoutCapture capture;
         find_match("text", queue, mutex);
 
-        EXPECT_TRUE(capture.str().find("Match found in file: \"assets/text_file\" -> text") != std::string::npos);
+        EXPECT_TRUE(capture.str().find("Match found in file: \"assets/text_file\" -> text") !=
+                    std::string::npos);
     }
-    
 
     EXPECT_EQ(queue.size(), 0);
     EXPECT_TRUE(queue.is_completed());
@@ -53,9 +51,9 @@ TEST(MatchHandlerTests, Match_Not_Found) {
         StdoutCapture capture;
         find_match("foo", queue, mutex);
 
-        EXPECT_FALSE(capture.str().find("Match found in file: \"assets/text_file\" -> text") != std::string::npos);
+        EXPECT_FALSE(capture.str().find("Match found in file: \"assets/text_file\" -> text") !=
+                     std::string::npos);
     }
-    
 
     EXPECT_EQ(queue.size(), 0);
     EXPECT_TRUE(queue.is_completed());

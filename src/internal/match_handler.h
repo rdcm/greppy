@@ -1,8 +1,9 @@
 #pragma once
 
 #include "bounded_queue.h"
+#include <filesystem>
 #include <string>
 #include <thread>
-#include <filesystem>
 
-void find_match(std::string pattern, BoundedQueue<std::filesystem::path> &queue, std::mutex &cout_mutex);
+void find_match(std::string pattern, BoundedQueue<std::filesystem::path> &queue,
+                std::mutex &cout_mutex);

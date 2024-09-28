@@ -1,12 +1,13 @@
 #include "../internal/match_handler.h"
 #include "../internal/bounded_queue.h"
-#include <optional>
-#include <iostream>
-#include <regex>
 #include <fstream>
+#include <iostream>
+#include <optional>
+#include <regex>
 #include <thread>
 
-void find_match(std::string pattern, BoundedQueue<std::filesystem::path> &queue, std::mutex &cout_mutex) {
+void find_match(std::string pattern, BoundedQueue<std::filesystem::path> &queue,
+                std::mutex &cout_mutex) {
     while (true) {
         std::optional<std::filesystem::path> file_path_opt = queue.pop();
         if (file_path_opt) {
@@ -28,7 +29,8 @@ void find_match(std::string pattern, BoundedQueue<std::filesystem::path> &queue,
 
             std::lock_guard<std::mutex> guard(cout_mutex);
             for (auto &m : matches) {
-                std::cout << "Match found in file: " << get<0>(m) << " -> " << get<1>(m) << std::endl;
+                std::cout << "Match found in file: " << get<0>(m) << " -> " << get<1>(m)
+                          << std::endl;
             }
         }
 
