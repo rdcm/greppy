@@ -1,4 +1,4 @@
-#include "../src/parser.cpp"
+#include "../src/internal/parser.h"
 #include <filesystem>
 #include <gtest/gtest.h>
 #include <vector>
