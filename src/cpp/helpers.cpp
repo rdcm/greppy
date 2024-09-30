@@ -1,5 +1,5 @@
-#include "../internal/helpers.h"
-#include "../internal/bounded_queue.h"
+#include "../headers/helpers.h"
+#include "../headers/bounded_queue.h"
 #include <chrono>
 #include <filesystem>
 #include <fstream>

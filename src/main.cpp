@@ -1,7 +1,7 @@
-#include "internal/bounded_queue.h"
-#include "internal/helpers.h"
-#include "internal/match_handler.h"
-#include "internal/parser.h"
+#include "headers/bounded_queue.h"
+#include "headers/helpers.h"
+#include "headers/match_handler.h"
+#include "headers/parser.h"
 #include <filesystem>
 #include <iostream>
 

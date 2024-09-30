@@ -1,5 +1,5 @@
-#include "../src/internal/bounded_queue.h"
-#include "../src/internal/helpers.h"
+#include "../src/headers/bounded_queue.h"
+#include "../src/headers/helpers.h"
 #include <gtest/gtest.h>
 
 TEST(HelpersTests, Is_Binary_File) {

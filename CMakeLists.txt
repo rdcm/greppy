@@ -21,20 +21,20 @@ FetchContent_MakeAvailable(googletest)
 # application
 add_executable(greppy
   src/main.cpp
-  src/public/parser.cpp
-  src/public/helpers.cpp
-  src/public/match_handler.cpp)
+  src/cpp/parser.cpp
+  src/cpp/helpers.cpp
+  src/cpp/match_handler.cpp)
 
-target_include_directories(greppy PRIVATE src/internal)
+target_include_directories(greppy PRIVATE src/headers)
 
 # tests
 add_executable(tests 
   tests/parser_tests.cpp
   tests/helpers_tests.cpp
   tests/match_handler_tests.cpp
-  src/public/parser.cpp
-  src/public/helpers.cpp
-  src/public/match_handler.cpp)
+  src/cpp/parser.cpp
+  src/cpp/helpers.cpp
+  src/cpp/match_handler.cpp)
 
 target_link_libraries(tests gtest_main)
 include(GoogleTest)

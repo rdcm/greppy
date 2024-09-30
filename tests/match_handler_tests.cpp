@@ -1,5 +1,5 @@
-#include "../src/internal/bounded_queue.h"
-#include "../src/internal/match_handler.h"
+#include "../src/headers/bounded_queue.h"
+#include "../src/headers/match_handler.h"
 #include <gtest/gtest.h>
 #include <thread>
 
