@@ -1,5 +1,5 @@
 #include "../src/headers/bounded_queue.h"
-#include "../src/headers/match_handler.h"
+#include "../src/headers/utils.h"
 #include <gtest/gtest.h>
 #include <thread>
 
@@ -23,7 +23,7 @@ class StdoutCapture {
     std::ostringstream ss;
 };
 
-TEST(MatchHandlerTests, Match_Found) {
+TEST(UtilsTests, Match_Found) {
     std::mutex mutex;
     BoundedQueue<std::filesystem::path> queue(10);
 
@@ -41,7 +41,7 @@ TEST(MatchHandlerTests, Match_Found) {
     EXPECT_TRUE(queue.is_completed());
 }
 
-TEST(MatchHandlerTests, Match_Not_Found) {
+TEST(UtilsTests, Match_Not_Found) {
     std::mutex mutex;
     BoundedQueue<std::filesystem::path> queue(10);
 
@@ -58,3 +58,31 @@ TEST(MatchHandlerTests, Match_Not_Found) {
     EXPECT_EQ(queue.size(), 0);
     EXPECT_TRUE(queue.is_completed());
 }
+
+TEST(UtilsTests, Is_Binary_File) {
+    auto result = is_binary_file("assets/bin_file.png");
+
+    EXPECT_TRUE(result);
+}
+
+TEST(UtilsTests, Is_Text_File) {
+    auto result = is_binary_file("assets/text_file");
+
+    EXPECT_FALSE(result);
+}
+
+TEST(UtilsTests, Cores_Count_Ne_Zero) {
+    auto result = get_cores_count();
+
+    EXPECT_NE(result, 0);
+}
+
+TEST(UtilsTests, Found_Only_Text_File) {
+    BoundedQueue<std::filesystem::path> queue(10);
+    find_files("assets", queue);
+
+    EXPECT_EQ(queue.size(), 1);
+    EXPECT_EQ(queue.pop().value(), "assets/text_file");
+    EXPECT_EQ(queue.size(), 0);
+}
+
