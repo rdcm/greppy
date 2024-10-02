@@ -85,4 +85,3 @@ TEST(UtilsTests, Found_Only_Text_File) {
     EXPECT_EQ(queue.pop().value(), "assets/text_file");
     EXPECT_EQ(queue.size(), 0);
 }
-

@@ -15,3 +15,6 @@ tests:
 
 format:
 	find ./src ./tests -name '*.cpp' -o -name '*.h' | xargs clang-format -i
+
+lint:
+	find src -name '*.cpp' -exec clang-tidy {} -- -std=c++23 -I src/headers \;

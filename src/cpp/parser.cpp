@@ -39,6 +39,7 @@ std::expected<Settings, ParseError> parse_command_line_args(int argc, const char
     }
 
     std::vector<std::string> args;
+    args.reserve(argc);
     for (int i = 0; i < argc; i++) {
         args.push_back(std::string(argv[i]));
     }

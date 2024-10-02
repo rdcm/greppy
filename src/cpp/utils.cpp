@@ -4,14 +4,14 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
-#include <thread>
 #include <optional>
 #include <regex>
+#include <thread>
 
-void find_files(std::filesystem::path dir_path, BoundedQueue<std::filesystem::path> &queue) {
+void find_files(const std::filesystem::path &dir_path, BoundedQueue<std::filesystem::path> &queue) {
     auto now = std::chrono::system_clock::now();
     for (const auto &entry : std::filesystem::recursive_directory_iterator(dir_path)) {
-        auto path = entry.path();
+        auto const &path = entry.path();
         if (entry.is_regular_file() && !is_binary_file(path)) {
             auto last_write_time = std::filesystem::last_write_time(path);
             if (last_write_time.time_since_epoch() > now.time_since_epoch()) {
@@ -50,7 +50,7 @@ unsigned int get_cores_count() {
     return cores_count;
 }
 
-void find_match(std::string pattern, BoundedQueue<std::filesystem::path> &queue,
+void find_match(const std::string &pattern, BoundedQueue<std::filesystem::path> &queue,
                 std::mutex &cout_mutex) {
     while (true) {
         std::optional<std::filesystem::path> file_path_opt = queue.pop();
@@ -58,7 +58,7 @@ void find_match(std::string pattern, BoundedQueue<std::filesystem::path> &queue,
             auto file_path = file_path_opt.value();
             std::ifstream file(file_path, std::ios::in);
             if (!file.is_open()) {
-                std::cerr << "Error opening file: " << file_path << std::endl;
+                std::cerr << "Error opening file: " << file_path << '\n';
                 continue;
             }
 
@@ -73,8 +73,7 @@ void find_match(std::string pattern, BoundedQueue<std::filesystem::path> &queue,
 
             std::lock_guard<std::mutex> guard(cout_mutex);
             for (auto &m : matches) {
-                std::cout << "Match found in file: " << get<0>(m) << " -> " << get<1>(m)
-                          << std::endl;
+                std::cout << "Match found in file: " << get<0>(m) << " -> " << get<1>(m) << '\n';
             }
         }
 
