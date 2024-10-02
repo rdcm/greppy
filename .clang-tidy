@@ -1,4 +1,12 @@
-Checks: '-*,clang-analyzer-*,bugprone-*,performance-*'
+Checks: >
+  -*,
+  clang-analyzer-*,
+  bugprone-*,
+  performance-*',
+  clang-diagnostic-return-type,   # Enforces return type
+  modernize-use-nodiscard,        # Warns if return value is ignored
+  misc-no-recursion,              # Detects if recursion is present without return
+  misc-misplaced-widening-cast    # Checks for type issues in return value
 WarningsAsErrors: '*'
 HeaderFilterRegex: ''
 FormatStyle: none
