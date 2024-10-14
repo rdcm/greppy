@@ -5,26 +5,24 @@
 #include <filesystem>
 #include <iostream>
 
-using namespace std;
-
 constexpr size_t QUEUE_CAPACITY = 1000;
 
 int main_internal(int argc, const char *argv[]) {
     auto result = parse_command_line_args(argc, argv);
     if (!result) {
-        cout << "Error: " << get_error_message(result.error()) << '\n';
+        std::cout << "Error: " << get_error_message(result.error()) << '\n';
         return EXIT_FAILURE;
     }
 
     auto settings = result.value();
-    BoundedQueue<filesystem::path> queue(QUEUE_CAPACITY);
+    BoundedQueue<std::filesystem::path> queue(QUEUE_CAPACITY);
 
-    thread find_files_thread(find_files, ref(settings.Directory), ref(queue));
+    std::thread find_files_thread(find_files, std::ref(settings.Directory), std::ref(queue));
 
-    mutex cout_mutex;
-    vector<thread> workers;
+    std::mutex cout_mutex;
+    std::vector<std::thread> workers;
     for (size_t i = 0; i < get_cores_count(); i++) {
-        thread worker_tread(find_match, ref(settings.Pattern), ref(queue), ref(cout_mutex));
+        std::thread worker_tread(find_match, ref(settings.Pattern), std::ref(queue), std::ref(cout_mutex));
         workers.push_back(std::move(worker_tread));
     }
 
@@ -40,10 +38,10 @@ int main(int argc, const char *argv[]) {
     try {
         return main_internal(argc, argv);
     } catch (const std::exception &e) {
-        cerr << "Exception caught: " << e.what() << '\n';
+        std::cerr << "Exception caught: " << e.what() << '\n';
         return EXIT_FAILURE;
     } catch (...) {
-        cerr << "Unknown exception caught" << '\n';
+        std::cerr << "Unknown exception caught" << '\n';
         return EXIT_FAILURE;
     }
 }
