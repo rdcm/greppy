@@ -1,12 +1,13 @@
 #include "headers/bounded_queue.h"
 #include "headers/parser.h"
 #include "headers/utils.h"
+#include <cstdlib>
 #include <filesystem>
 #include <iostream>
 
 using namespace std;
 
-const size_t QUEUE_CAPACITY = 1000;
+constexpr size_t QUEUE_CAPACITY = 1000;
 
 int main_internal(int argc, const char *argv[]) {
     auto result = parse_command_line_args(argc, argv);

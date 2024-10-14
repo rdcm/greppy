@@ -1,5 +1,6 @@
 #pragma once
 
+#include <atomic>
 #include <condition_variable>
 #include <mutex>
 #include <optional>
@@ -7,27 +8,27 @@
 
 template <typename T> class BoundedQueue {
   private:
+    size_t capacity_;
     std::queue<T> queue_;
     std::mutex mutex_;
-    size_t capacity_;
     std::condition_variable not_empty_;
     std::condition_variable not_full_;
-    bool is_completed_ = false;
+    std::atomic<bool> is_completed_ = false;
 
   public:
     BoundedQueue(size_t capacity) : capacity_(capacity), is_completed_(false) {}
 
     void complete() {
-        {
-            std::unique_lock<std::mutex> lock(mutex_);
-            is_completed_ = true;
-        }
+        is_completed_ = true;
         not_empty_.notify_all();
     }
 
     bool is_completed() { return is_completed_; }
 
-    bool size() const { return queue_.size(); }
+    bool size() {
+        std::unique_lock<std::mutex> lock(mutex_);
+        return queue_.size();
+    }
 
     void push(const T &item) {
         std::unique_lock<std::mutex> lock(mutex_);
