@@ -22,7 +22,7 @@ int main_internal(int argc, const char *argv[]) {
     std::mutex cout_mutex;
     std::vector<std::thread> workers;
     for (size_t i = 0; i < get_cores_count(); i++) {
-        std::thread worker_tread(find_match, ref(settings.Pattern), std::ref(queue), std::ref(cout_mutex));
+        std::thread worker_tread(find_match, std::ref(settings.Pattern), std::ref(queue), std::ref(cout_mutex));
         workers.push_back(std::move(worker_tread));
     }
 
